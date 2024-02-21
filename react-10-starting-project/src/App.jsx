@@ -71,7 +71,7 @@ function App() {
   const contextValue = {
     items: shoppingCart.items,
     addItemToCart: handleAddItemToCart,
-    updateCartItemQuantity: handleUpdateCartItemQuantity
+    updateItemQuantity: handleUpdateCartItemQuantity
   }
 
   return (
