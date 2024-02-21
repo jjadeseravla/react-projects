@@ -1,3 +1,5 @@
+import React from "react";
+import PropTypes from "prop-types"; 
 import { useContext } from "react";
 import { CartContext } from "../store/shopping-cart-context";
 
@@ -46,3 +48,7 @@ export default function Cart({ onUpdateItemQuantity }) {
     </div>
   );
 }
+
+Cart.propTypes = {
+  onUpdateItemQuantity: PropTypes.func.isRequired, // Make sure onUpdateItemQuantity is a function and is required
+};

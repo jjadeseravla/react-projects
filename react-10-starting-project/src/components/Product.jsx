@@ -1,27 +1,22 @@
+import React from "react";
 import { useContext } from "react";
 import { CartContext } from "../store/shopping-cart-context";
 
-export default function Product({
-  id,
-  image,
-  title,
-  price,
-  description,
-})
-
-{
-const {addItemToCart} = useContext(CartContext);
+export default function Product() {
+  
+  const { addItemToCart } = useContext(CartContext);
+  
   return (
     <article className="product">
-      <img src={image} alt={title} />
+      <img src={CartContext.image} alt={CartContext.title} />
       <div className="product-content">
         <div>
-          <h3>{title}</h3>
-          <p className='product-price'>${price}</p>
-          <p>{description}</p>
+          <h3>{CartContext.title}</h3>
+          <p className='product-price'>${CartContext.price}</p>
+          <p>{CartContext.description}</p>
         </div>
         <p className='product-actions'>
-          <button onClick={() => addItemToCart(id)}>Add to Cart</button>
+          <button onClick={() => addItemToCart(CartContext.id)}>Add to Cart</button>
         </p>
       </div>
     </article>

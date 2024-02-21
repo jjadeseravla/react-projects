@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 
 import Header from './components/Header.jsx';
@@ -69,20 +70,22 @@ function App() {
 
   const contextValue = {
     items: shoppingCart.items,
-    addItemToCart: handleAddItemToCart
+    addItemToCart: handleAddItemToCart,
+    updateCartItemQuantity: handleUpdateCartItemQuantity
   }
 
   return (
     <>
       <CartContext.Provider value={contextValue}>
-      <Header
+      {/* <Header
         cart={shoppingCart}
         onUpdateCartItemQuantity={handleUpdateCartItemQuantity}
-      />
+        /> */}
+           <Header/>
       <Shop>
         {DUMMY_PRODUCTS.map((product) => (
           <li key={product.id}>
-            <Product {...product} onAddToCart={handleAddItemToCart } />
+            <Product {...product} />
           </li>
         ))}
       </Shop>
