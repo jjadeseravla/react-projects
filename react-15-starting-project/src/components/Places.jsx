@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 
 export default function Places({ title, places, fallbackText, onSelectPlace }) {
   console.log(places);
