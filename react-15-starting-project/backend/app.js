@@ -19,6 +19,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/places', async (req, res) => {
+  console.log('places form backend app')
   const fileContent = await fs.readFile('./data/places.json');
 
   const placesData = JSON.parse(fileContent);
