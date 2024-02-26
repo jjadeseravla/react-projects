@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import MealItem from "./MealItem";
 
 export default function Meals() {
   // const [isFetching, setIsFetching] = useState(false);
@@ -28,9 +29,7 @@ export default function Meals() {
     <>
       <ul id="meals">
         {meals.map((meal) => (
-          <li key={meal.id}>
-            {meal.name}
-          </li>
+          <MealItem key={meal.id}  meal={meal} />
         ))}
       </ul>
     </>
