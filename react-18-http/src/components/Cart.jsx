@@ -17,6 +17,10 @@ export default function Cart() {
     userCtx.showCheckout();
   }
 
+  function handleCloseCart() {
+    userCtx.hideCart();
+  }
+
   console.log('---------', userCtx);
   console.log('---------111', cartCxt.items);
   return (
@@ -34,7 +38,7 @@ export default function Cart() {
       </ul>
       <p className='cart-total'>`{currencyFormatter.format(cartTotal)}</p>
       <p className='modal-actions'>
-      <Button textOnly>
+      <Button textOnly onClick={handleCloseCart}>
         Close
       </Button>
       <Button onClick={handleShowCheckout}>
