@@ -26,7 +26,7 @@ function cartReducer(state, action) {
   } 
   if (action.type === 'REMOVE_ITEM') {
     const existingCartItemIndex = state.items.findIndex((item) => {
-      return item.id === action.item.id;
+      return item.id === action.id;
     });
 
     const updatedItems = [...state.items]; //create a copy of array
@@ -49,11 +49,11 @@ export function CartContextProvider({ children }) {
   const [ cart, dispatchCartAction] = useReducer(cartReducer, {items: []});
   
   function addItem(item) {
-    dispatchCartAction({type: 'ADD_ITEM', item})
+    dispatchCartAction({type: 'ADD_ITEM', item: item})
   }
   
   function removeItem(id) {
-    dispatchCartAction({type: 'REMOVE_ITEM', id})
+    dispatchCartAction({type: 'REMOVE_ITEM', id: id})
   }
   const cartContext = {
     items: cart.items,

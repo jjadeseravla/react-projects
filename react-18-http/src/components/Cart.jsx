@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import Modal from './UI/Modal';
 import Button from './UI/Button';
+import CartItem from './UI/CartItem';
 import CartContext from '../store/CartContext';
 import { currencyFormatter } from '../util/formatting';
 import UserProgressContext from '../store/UserProgressContext';
@@ -30,9 +31,15 @@ export default function Cart() {
         {cartCxt.items.map((item) => {
           console.log('inside map', item)
           return (
-            <li key={item.id}>
-              {item.name} --- {item.quantity}
-            </li>
+            <CartItem
+              key={item.id}
+              name={item.name}
+              quantity={item.quantity}
+              price={item.price}
+              onDecrease={() => cartCxt.removeItem(item.id)}
+              onIncrease={() => cartCxt.addItem(item)}
+              // {...item} but it has some data we dont need, so do it individually
+            />
           )
         })}
       </ul>
