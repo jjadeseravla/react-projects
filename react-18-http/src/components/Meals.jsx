@@ -1,29 +1,31 @@
-import { useState, useEffect } from "react";
 import MealItem from "./MealItem";
+import useHttp from "../hooks/useHttp";
+
+
+const requestConfig = {};
 
 export default function Meals() {
-  // const [isFetching, setIsFetching] = useState(false);
-  const [meals, setMeals] = useState([]);
-  const [error, setError] = useState();
 
-  useEffect(() => {
-    async function getMeals() {
-      // setIsFetching(true);
-      // try {
-        const response = await fetch('http://localhost:3000/meals', { method: 'GET' });
-        if (!response.ok) {
-          console.log('no response');
-        }
-        const mealsData = await response.json(); 
-        setMeals(mealsData);
-        // setIsFetching(false);
-      // } catch (e) {
-      //   setError({ message: error.message } || 'cant fetch meals');
-      //   // setIsFetching(false);
-      // }
-    }
-    getMeals();
-  }, []);
+  const {
+    data: meals,
+    isLoading,
+    err
+  } = useHttp('http://localhost:3000/meals', requestConfig, [])
+
+  // if (!data) {
+  //   <p>is getting meals</p>
+  // }
+  if (isLoading) {
+    return <p>fetching meals...</p>;
+  }
+
+  if (err) {
+    return <p>Error: {err}</p>;
+  }
+
+  if (!meals) {
+    return null; // or any fallback component or message
+  }
 
   return (
     <>
@@ -36,7 +38,3 @@ export default function Meals() {
   )
 }
 
-// app.get('/meals', async (req, res) => {
-//   const meals = await fs.readFile('./data/available-meals.json', 'utf8');
-//   res.json(JSON.parse(meals));
-// });
