@@ -20,15 +20,36 @@ export default function Checkout() {
     userCxt.hideCheckout()
   }
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    // how we can easily extract data from the user, eg {email: test@gmail.com}
+    const customerData = Object.fromEntries(fd.entries());
+
+    fetch('https://localhost:3000/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        order: {
+          items: cartCxt.items,
+          customer: customerData
+        }
+      })
+    });
+    
+  }
+
   return (
     <Modal
       open={userCxt.progress === 'checkout'}
       onClose={handleClose}
     >
-      <form action="">
+      <form onSubmit={handleSubmit}>
         <h2>Checkout</h2>
         <p>Total amount: {currencyFormatter.format(cartTotal)}</p>
-        <Input label="full name" type="text" id="full-name" />
+        <Input label="full name" type="text" id="name" />
         <Input label="emaiil" type="email" id="email" />
         <Input label="street" type="text" id="street" />
         <div className="control-row">
