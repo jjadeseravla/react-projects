@@ -27,6 +27,7 @@ import EventsDetailPage from './EventDetailPage';
 import NewEventPage from './NewEventPage';
 import EditHomePage from './EditEventPage';
 import RootLayout from './Root';
+import AuthenticationPage, {action as authAction} from './Authentication';
 
 const router = createBrowserRouter([
   {
@@ -34,8 +35,23 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       // { index: true,  element: <HomePage/>},
-      { path: '/',  element: <HomePage/>},
-      { path: '/events', element: <EventsPage /> },
+      { path: '/', element: <HomePage /> },
+      {
+        path: 'auth?mode=login',
+        element: <AuthenticationPage />,
+        action: authAction
+      },
+      {
+        path: '/events', element: <EventsPage />, loader: async () => {
+          const response = await fetch('http://localhost:8080/events');
+
+          if (!response.ok) {
+            console.log('not ok')
+          } else {
+            const resData = await response.json();
+            return resData.events;
+          }
+      } },
       { path: '/events/:id', element: <EventsDetailPage /> },
       { path: '/events/new', element: <NewEventPage /> },
       {path: '/events/:id/edit', element: <EditHomePage/>}
