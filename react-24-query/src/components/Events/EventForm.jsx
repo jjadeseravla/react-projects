@@ -41,7 +41,8 @@ export default function EventForm({ inputData, onSubmit, children }) {
       
       {isError && (<ErrorBlock title="cannot fetch images" message='could not fetch images' />)}
 
-      {data && (<div className="control">
+      {data && (
+        <div className="control">
         <ImagePicker
           images={data}
           onSelect={handleSelectImage}

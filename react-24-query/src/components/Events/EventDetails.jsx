@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, Outlet, useParams, useNavigate } from 'react-router-dom';
 import {
   useQuery,
@@ -7,14 +8,16 @@ import {
   fetchEvent,
    deleteEvent
 } from '../../util/http.js';
-import { queryClient } from '@tanstack/react-query';
+import { queryClient } from '../../util/http.js';
 import ErrorBlock from '../UI/ErrorBlock.jsx';
 import LoadingIndicator from '../UI/LoadingIndicator.jsx';
 import Header from '../Header.jsx';
+import Modal from '../UI/Modal.jsx';
 
 // fetchevent useParams for id, output title and link to img
 // and all capslocks and make delete button work useMutation
 export default function EventDetails() {
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const params = useParams();
   const navigate = useNavigate();
@@ -24,23 +27,34 @@ export default function EventDetails() {
     queryFn: ({signal}) => fetchEvent({signal, id: params.id})
   });
 
-  const { mutate } = useMutation({
+  const { mutate,
+    isPending: isPendingDeletion,
+    isError: isErrorDeletion,
+    error: deleteError
+  } = useMutation({
     mutationFn: deleteEvent,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['events']
+        queryKey: ['events'],
+        referchType: 'none',
       }),
       navigate('/events');
     }
   });
 
-  function handleOnClick() {
+  function handleDelete() {
     mutate({ id: params.id });
   }
 
-  let content;
+  function handleStartDelete() {
+    setIsDeleting(true)
+  }
 
-  console.log('------', data);
+  function handleStopDelete() {
+    setIsDeleting(false);
+  }
+
+  let content;
 
   if (isPending) {
     content = <LoadingIndicator />;
@@ -68,7 +82,7 @@ export default function EventDetails() {
       <header>
       <h1>{data.title}</h1>
       <nav>
-        <button onClick={handleOnClick}>Delete</button>
+        <button onClick={handleStartDelete}>Delete</button>
         <Link to="edit">Edit</Link>
       </nav>
     </header>
@@ -88,6 +102,29 @@ export default function EventDetails() {
 
   return (
     <>
+      {isDeleting && (
+      <Modal onClose={handleStopDelete}>
+        <h2>Are you sure?</h2>
+        <div className='form-actions'>
+          {isPendingDeletion && (
+            <p>deleting, please wait</p>
+          )}
+          {!isPendingDeletion && (
+            <>
+          <button onClick={handleStopDelete}
+            className="button-text">
+              Cancel
+            </button>
+          <button onClick={handleDelete}
+            className='button'>
+            Delete
+          </button>
+            </>
+          )}
+        </div>
+        {isErrorDeletion && <ErrorBlock title="failed to delete event" message={deleteError.info?.message || 'failed to delete event'}/>}
+      </Modal>
+      )}
       <Outlet />
       <Header>
         <Link to="/events" className="nav-item">
