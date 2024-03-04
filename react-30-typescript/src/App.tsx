@@ -18,10 +18,17 @@ const [todos, setTodos] = useState<string[]>([]);
     // });
   };
 
+  const removeTodo = (todoText: string) => {
+    setTodos((prevTodos) => {
+      return prevTodos.filter(todo => todo !== todoText)
+    });
+  }
+  console.log('todo', todos);
+
   return (
     <div>
       <NewTodo onAddTodo={ addTodoHandler} />
-      <Todos items={todos} />
+      <Todos items={todos} removeTodo={removeTodo} />
     </div>
   );
 }
