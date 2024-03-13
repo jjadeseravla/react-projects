@@ -2,7 +2,10 @@
 import ResultsTable from './ResultsTable';
 
 function UserInput({
-  onChangeInput, userInput}) {
+  onChangeInput,
+  userInput,
+  resetHandler,
+}) {
 
   // const [initInvest, setInitInvest] = useState(0);
 
@@ -70,6 +73,7 @@ function UserInput({
           </p>
         </div>
       </section>
+      <button onClick={resetHandler}>Reset</button>
       <div>
         <ResultsTable/>
       </div>

@@ -3,14 +3,16 @@ import Header from './Header';
 import UserInput from './UserInput';
 import ResultsTable from './ResultsTable';
 
+const initialUserInput = {
+  initialInvestment: 10000,
+  annualInvestment: 1200,
+  expectedReturn: 6,
+  duration: 10,
+}
+
 function App() {
 
-  const [userInput, setUserInput] = useState({
-    initialInvestment: 10000,
-    annualInvestment: 1200,
-    expectedReturn: 6,
-    duration: 10,
-  });
+  const [userInput, setUserInput] = useState(initialUserInput);
 
   const inputIsValid = userInput.duration >= 1;
 
@@ -31,12 +33,17 @@ function App() {
     });
   }
 
+  function resetHandler() {
+    setUserInput(initialUserInput);
+    console.log('reset');
+  }
+
   console.log('app has inputs', userInput)
 
   return (
     <>
     <Header title="Investment Calculator" />
-      <UserInput userInput={userInput} onChangeInput={handleUserChange} />
+      <UserInput userInput={userInput} onChangeInput={handleUserChange} resetHandler={resetHandler} />
       {!inputIsValid && <p className='center'>Enter a duration above 0</p>}
       {inputIsValid && <ResultsTable input={userInput} />}
     </>
